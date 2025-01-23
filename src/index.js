@@ -1,3 +1,4 @@
+import './style.css';
 const API_KEY = '28RELCWXNR4CHUTCUDFR8F9FN';
 const baseURL =
   'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
@@ -43,6 +44,6 @@ function displayWeatherData(weatherData) {
   }
   const { temp } = weatherData.currentConditions;
   const { description } = weatherData;
-  temperatureElement.textContent = temp;
+  temperatureElement.textContent = temp + '°F';
   descriptionElement.textContent = description;
 }
