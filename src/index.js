@@ -1,9 +1,15 @@
 import './style.css';
-const API_KEY = '28RELCWXNR4CHUTCUDFR8F9FN';
-const baseURL =
+import { setMoonPhase } from './moonphase';
+import { changeTempColor } from './changeTempColor';
+export const API_KEY = '28RELCWXNR4CHUTCUDFR8F9FN';
+export const baseURL =
   'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 const submitBtn = document.getElementById('submitBtn');
 
+// load the moon phase before any weather data, moon phase is consistent every where on Earth (duh)
+setMoonPhase();
+
+// fetch data location of location entered in input field
 submitBtn.addEventListener('click', async () => {
   const location = document.querySelector('input').value.trim();
   if (location === '') {
@@ -18,7 +24,7 @@ submitBtn.addEventListener('click', async () => {
   }
 });
 
-async function getWeatherData(url) {
+export async function getWeatherData(url) {
   try {
     const response = await fetch(url, { mode: 'cors' });
     if (!response.ok) {
@@ -38,54 +44,16 @@ async function getWeatherData(url) {
 function displayWeatherData(weatherData) {
   const temperatureElement = document.getElementById('temp');
   const descriptionElement = document.getElementById('desc');
-  const moonphaseElement = document.getElementById('moonphase');
+
   if (!weatherData || !weatherData.currentConditions) {
     alert('Error parsing weather data');
     return;
   }
-  const { temp, moonphase } = weatherData.currentConditions;
+  const { temp } = weatherData.currentConditions;
   const { description } = weatherData;
+
   temperatureElement.textContent = temp + '°F';
-  switch (true) {
-    case temp <= 32:
-      temperatureElement.style.color = '#AECBFA';
-      break;
-    case temp > 32 && temp <= 64:
-      temperatureElement.style.color = '#C1E1C1';
-      break;
-    case temp > 64 && temp < 90:
-      temperatureElement.style.color = '#FFD59A';
-      break;
-    case temp >= 90:
-      temperatureElement.style.color = '#FFB3B3';
-      break;
-  }
-  switch (true) {
-    case moonphase === 0:
-      moonphaseElement.textContent = 'New Moon';
-      break;
-    case moonphase > 0 && moonphase < 0.25:
-      moonphaseElement.textContent = 'Waxing Crescent';
-      break;
-    case moonphase === 0.25:
-      moonphaseElement.textContent = 'First Quarter';
-      break;
-    case moonphase > 0.25 && moonphase < 0.5:
-      moonphaseElement.textContent = 'Waxing Gibbous';
-      break;
-    case moonphase === 0.5:
-      moonphaseElement.textContent = 'Full Moon';
-      break;
-    case moonphase > 0.5 && moonphase < 0.75:
-      moonphaseElement.textContent = 'Waning Gibbous';
-      break;
-    case moonphase === 0.75:
-      moonphaseElement.textContent = 'Last Quarter';
-      break;
-    case moonphase > 0.75 && moonphase < 1:
-      moonphaseElement.textContent = 'Waning Crescent';
-      break;
-  }
+  changeTempColor(temperatureElement, temp);
 
   descriptionElement.textContent = description;
 }
