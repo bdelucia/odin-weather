@@ -2,6 +2,7 @@ const API_KEY = '28RELCWXNR4CHUTCUDFR8F9FN';
 const baseURL =
   'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 const submitBtn = document.getElementById('submitBtn');
+
 submitBtn.addEventListener('click', async () => {
   const location = document.querySelector('input').value.trim();
   if (location === '') {
@@ -11,7 +12,8 @@ submitBtn.addEventListener('click', async () => {
   const url = baseURL + location + '?key=' + API_KEY;
   const weatherData = await getWeatherData(url);
   if (weatherData) {
-    console.log('Weather Data fetched: ', weatherData);
+    console.log('Weather Data fetched:', weatherData);
+    displayWeatherData(weatherData);
   }
 });
 
@@ -25,14 +27,22 @@ async function getWeatherData(url) {
     return weatherData;
   } catch (error) {
     console.log(error);
+    alert(
+      'Failed to fetch weather data. Please check the location or try again later.',
+    );
     return null;
   }
 }
 
-async function parseWeatherData() {
-  getWeatherData()
-    .then((data) => {
-      console.log('Weather Data fetched! ', data);
-    })
-    .catch((error) => console.log('Error handling promise, error: ', error));
+function displayWeatherData(weatherData) {
+  const temperatureElement = document.getElementById('temp');
+  const descriptionElement = document.getElementById('desc');
+  if (!weatherData || !weatherData.currentConditions) {
+    alert('Error parsing weather data');
+    return;
+  }
+  const { temp } = weatherData.currentConditions;
+  const { description } = weatherData;
+  temperatureElement.textContent = temp;
+  descriptionElement.textContent = description;
 }
