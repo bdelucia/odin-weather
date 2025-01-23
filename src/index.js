@@ -5,6 +5,7 @@ export const API_KEY = '28RELCWXNR4CHUTCUDFR8F9FN';
 export const baseURL =
   'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 const submitBtn = document.getElementById('submitBtn');
+const loader = document.getElementById('loader');
 
 // load the moon phase before any weather data, moon phase is consistent every where on Earth (duh)
 setMoonPhase();
@@ -17,11 +18,21 @@ submitBtn.addEventListener('click', async () => {
     alert('Please enter a location or zipcode');
     return;
   }
+
   const url = baseURL + location + '?key=' + API_KEY;
-  const weatherData = await getWeatherData(url);
-  if (weatherData) {
-    // console.log('Weather Data fetched:', weatherData);
-    displayWeatherData(weatherData);
+
+  loader.classList.remove('hidden');
+
+  try {
+    const weatherData = await getWeatherData(url);
+    if (weatherData) {
+      // console.log('Weather Data fetched:', weatherData);
+      displayWeatherData(weatherData);
+    }
+  } catch (error) {
+    console.log('Error fetching data, ', error);
+  } finally {
+    loader.classList.add('hidden');
   }
 });
 
