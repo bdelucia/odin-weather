@@ -12,6 +12,7 @@ setMoonPhase();
 // fetch data location of location entered in input field
 submitBtn.addEventListener('click', async () => {
   const location = document.querySelector('input').value.trim();
+  document.querySelector('input').value = '';
   if (location === '') {
     alert('Please enter a location or zipcode');
     return;
@@ -19,7 +20,7 @@ submitBtn.addEventListener('click', async () => {
   const url = baseURL + location + '?key=' + API_KEY;
   const weatherData = await getWeatherData(url);
   if (weatherData) {
-    console.log('Weather Data fetched:', weatherData);
+    // console.log('Weather Data fetched:', weatherData);
     displayWeatherData(weatherData);
   }
 });
@@ -44,13 +45,16 @@ export async function getWeatherData(url) {
 function displayWeatherData(weatherData) {
   const temperatureElement = document.getElementById('temp');
   const descriptionElement = document.getElementById('desc');
+  const locationElement = document.getElementById('location');
 
   if (!weatherData || !weatherData.currentConditions) {
     alert('Error parsing weather data');
     return;
   }
   const { temp } = weatherData.currentConditions;
-  const { description } = weatherData;
+  const { description, resolvedAddress } = weatherData;
+
+  locationElement.textContent = resolvedAddress;
 
   temperatureElement.textContent = temp + '°F';
   changeTempColor(temperatureElement, temp);

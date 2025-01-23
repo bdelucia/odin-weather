@@ -1,3 +1,4 @@
+// changes the color of the temp readout based on it's value
 export function changeTempColor(temperatureElement, temp) {
   switch (true) {
     case temp <= 32:

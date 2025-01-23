@@ -3,20 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Weather App</title>
+    <title>Bobbeh's Wonderful Weather App</title>
     <link rel="stylesheet" href="style.css" />
     <script src="script.js" defer></script>
   </head>
   <body>
     <div id="mainContainer">
       <div id="weatherDataContainer">
+        <div id="location"></div>
         <div id="temp">0°F</div>
         <div id="desc">Enter a location to get started.</div>
         <div id="moonphase"></div>
       </div>
       <div id="inputContainer">
         <label for="location">Enter Location: </label>
-        <input type="text" id="location" />
+        <input
+          type="text"
+          id="location"
+          placeholder="e.g. Phoenix, Italy, 85308, etc."
+        />
         <button type="submit" id="submitBtn">Submit</button>
       </div>
     </div>

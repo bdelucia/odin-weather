@@ -5,7 +5,7 @@ async function getMoonPhase() {
   let url = baseURL + '85308' + '?key=' + API_KEY;
   const weatherData = await getWeatherData(url);
   if (weatherData) {
-    console.log('Weather Data fetched:', weatherData);
+    // console.log('Weather Data fetched:', weatherData);
     const { moonphase } = weatherData.currentConditions;
     return moonphase;
   }
