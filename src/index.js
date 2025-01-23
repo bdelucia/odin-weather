@@ -38,11 +38,12 @@ async function getWeatherData(url) {
 function displayWeatherData(weatherData) {
   const temperatureElement = document.getElementById('temp');
   const descriptionElement = document.getElementById('desc');
+  const moonphaseElement = document.getElementById('moonphase');
   if (!weatherData || !weatherData.currentConditions) {
     alert('Error parsing weather data');
     return;
   }
-  const { temp } = weatherData.currentConditions;
+  const { temp, moonphase } = weatherData.currentConditions;
   const { description } = weatherData;
   temperatureElement.textContent = temp + '°F';
   switch (true) {
@@ -59,5 +60,32 @@ function displayWeatherData(weatherData) {
       temperatureElement.style.color = '#FFB3B3';
       break;
   }
+  switch (true) {
+    case moonphase === 0:
+      moonphaseElement.textContent = 'New Moon';
+      break;
+    case moonphase > 0 && moonphase < 0.25:
+      moonphaseElement.textContent = 'Waxing Crescent';
+      break;
+    case moonphase === 0.25:
+      moonphaseElement.textContent = 'First Quarter';
+      break;
+    case moonphase > 0.25 && moonphase < 0.5:
+      moonphaseElement.textContent = 'Waxing Gibbous';
+      break;
+    case moonphase === 0.5:
+      moonphaseElement.textContent = 'Full Moon';
+      break;
+    case moonphase > 0.5 && moonphase < 0.75:
+      moonphaseElement.textContent = 'Waning Gibbous';
+      break;
+    case moonphase === 0.75:
+      moonphaseElement.textContent = 'Last Quarter';
+      break;
+    case moonphase > 0.75 && moonphase < 1:
+      moonphaseElement.textContent = 'Waning Crescent';
+      break;
+  }
+
   descriptionElement.textContent = description;
 }
